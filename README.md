@@ -13,9 +13,6 @@ Radix UI and ShadCN components were used to create the UI of the website. Moreov
 This project was deployed to Github Pages and can be tested there.
 
 ## Preview
-![Screenshot 2024-05-28 055755](https://github.com/HasanYahya101/Tic-Tac-Toe-Vite/assets/118683092/3a98c544-9970-4941-858f-2c3fc0973d08)
-![Screenshot 2024-05-28 055819](https://github.com/HasanYahya101/Tic-Tac-Toe-Vite/assets/118683092/c56ff7da-7e7e-4ea4-85de-01f950ee8618)
-![Screenshot 2024-05-28 055837](https://github.com/HasanYahya101/Tic-Tac-Toe-Vite/assets/118683092/28a03319-d429-4eca-9009-ef024c0603c6)
 
 ## React + Vite
 
