@@ -1,8 +1,8 @@
-# Tic Tac Toe (React + Vite)
+# Palate Path (React + Vite)
 
 ## Introduction
 
-This is a classic Tic Tac Toe game. Players take turns placing their marks (either X or O) on a 3x3 grid. The first player to get 3 of their marks in a row (horizontally, vertically, or diagonally) wins the game.
+Intro
 
 ## UI Library
 
@@ -10,7 +10,7 @@ Radix UI and ShadCN components were used to create the UI of the website. Moreov
 
 ## Deployment
 
-This project was deployed to Github Pages and can be tested there. No servers or databases were used in this Project.
+This project was deployed to Github Pages and can be tested there.
 
 ## Preview
 ![Screenshot 2024-05-28 055755](https://github.com/HasanYahya101/Tic-Tac-Toe-Vite/assets/118683092/3a98c544-9970-4941-858f-2c3fc0973d08)
