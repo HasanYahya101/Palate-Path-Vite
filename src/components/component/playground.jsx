@@ -97,6 +97,13 @@ export function Playground() {
     async function delTask(status, id) {
         let delData = await database.sql(`DELETE FROM data WHERE status = '${status}' AND id = ${id} AND EXISTS (SELECT 1 FROM data WHERE status = '${status}' AND id = ${id});`);
         switchChange();
+        toast(
+            {
+                title: "Success",
+                description: "Task deleted successfully.",
+                variant: "success",
+            }
+        );
     }
 
     useEffect(() => {
