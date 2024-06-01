@@ -8,6 +8,8 @@ export function Playground() {
 
     let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
 
+    const [change, setChange] = useState(false);
+
     const [doneTasks, setDoneTasks] = useState([]);
 
     // async function get data
@@ -18,12 +20,23 @@ export function Playground() {
         setDoneTasks(doneData);
     }
 
+    async function switchChange() {
+        change ? setChange(false) : setChange(true);
+    }
+
+    async function delTask(status, id) {
+        let delData = await database.sql(`DELETE FROM data WHERE status = '${status}' AND id = ${id} AND EXISTS (SELECT 1 FROM data WHERE status = '${status}' AND id = ${id});`);
+        console.log("delData", delData);
+        switchChange();
+    }
+
     useEffect(() => {
-        //fetchDoneData();
-    }, []);
+        fetchDoneData();
+    }, [change]);
 
     return (
         (<div className="flex flex-col h-screen">
+            <AddTask />
             <header
                 className="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -186,7 +199,6 @@ export function Playground() {
                     <TabsContent value="done" className="mt-6 mb-2">
                         {doneTasks.length === 0 || doneTasks.size === 0 || doneTasks === null ? (
                             <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
-
                                 <div className="flex flex-col items-center gap-4">
                                     <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                                     <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
@@ -210,7 +222,7 @@ export function Playground() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button
+                                            <Button onClick={() => delTask("done", task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                                                 size="icon"
                                                 variant="ghost">
@@ -220,13 +232,36 @@ export function Playground() {
                                         </CardFooter>
                                     </Card>
                                 ))}
-
                             </div>
                         )}
                     </TabsContent>
                 </Tabs>
             </main >
         </div >)
+    );
+}
+
+function AddTask() {
+    return (
+        (<div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full max-w-md">
+                <h2 className="text-2xl font-bold mb-4">Add Task</h2>
+                <form>
+                    <div className="mb-4">
+                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                        <input type="text" id="description" name="description" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    </div>
+                    <div className="mb-4">
+                        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
+                        <input type="date" id="dueDate" name="dueDate" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    </div>
+                    <div className="flex justify-end gap-4">
+                        <button type="button" className="bg-gray-900 text-white px-4 py-2 rounded-md">Cancel</button>
+                        <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>)
     );
 }
 
