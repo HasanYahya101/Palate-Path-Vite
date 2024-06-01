@@ -24,7 +24,6 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import Filter from 'bad-words';
-import dotenv from 'dotenv';
 
 const SQLITE_CLOUD_STRING = process.env.SQLITE_CLOUD_STRING;
 
