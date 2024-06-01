@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from 'react';
 import { Database } from '@sqlitecloud/drivers';
 import { Calendar as CalendarIcon_ } from "lucide-react";
+import { format, set } from "date-fns";
 import {
     Popover,
     PopoverContent,
@@ -20,14 +21,21 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
+
 
 let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
 
 export function Playground() {
 
+    const { toast } = useToast();
+
     const [change, setChange] = useState(false);
 
     const [doneTasks, setDoneTasks] = useState([]);
+
+    const [allTasks, setAllTasks] = useState([]);
 
     // async function get data
     async function fetchDoneData() {
@@ -35,6 +43,13 @@ export function Playground() {
         console.log("doneData", doneData);
         // set data to state
         setDoneTasks(doneData);
+    }
+
+    async function fetchAllData() {
+        let allData = await database.sql('SELECT * FROM data;');
+        console.log("AllData", allData);
+        // set data to state
+        setAllTasks(allData);
     }
 
     async function switchChange() {
@@ -49,6 +64,7 @@ export function Playground() {
 
     useEffect(() => {
         fetchDoneData();
+        fetchAllData();
     }, [change]);
 
     return (
@@ -59,7 +75,8 @@ export function Playground() {
                     <ClipboardListIcon className="w-6 h-6" />
                     <h1 className="text-2xl font-bold"> PalatePath</h1>
                 </div>
-                <AddTask />
+                <AddTask change={change} setChange={setChange}
+                />
             </header>
 
             <main className="flex-1 bg-gray-100 dark:bg-gray-900 p-6 grid gap-6">
@@ -93,43 +110,55 @@ export function Playground() {
                         </div>
                     </div>
                     <TabsContent value="all" className="mt-6 mb-2">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
+                        {allTasks.length === 0 || allTasks.size === 0 || allTasks === null ? (
+                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                                <div className="flex flex-col items-center gap-4">
+                                    <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                                    <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        Please add a task to see it here.
+                                    </p>
+                                </div>
                             </Card>
-                        </div>
+                        ) : (
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {allTasks.map((task) => (
+                                    <Card className="flex flex-col justify-between h-full">
+                                        <CardHeader>
+                                            <CardTitle>{task.description}</CardTitle>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">Due: {task.month_} {task.date_}, {task.year_}</div>
+                                        </CardHeader>
+                                        <CardContent className="justify-between h-full">
+                                            {task.status === "todo" ? (
+                                                <div className="flex items-center gap-2">
+                                                    <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                                    <span className="text-sm font-medium">To Do</span>
+                                                </div>
+                                            ) : task.status === "inprogress" ? (
+                                                <div className="flex items-center gap-2">
+                                                    <div className="h-2 w-2 rounded-full bg-red-500" />
+                                                    <span className="text-sm font-medium">In Progress</span>
+                                                </div>
+                                            ) : (
+                                                <div className="flex items-center gap-2">
+                                                    <div className="h-2 w-2 rounded-full bg-green-500" />
+                                                    <span className="text-sm font-medium">Done</span>
+                                                </div>
+                                            )}
+                                        </CardContent>
+                                        <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
+                                            <Button onClick={() => delTask("done", task.id)}
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <TrashIcon className="w-5 h-5" />
+                                                <span className="sr-only">Delete Task</span>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
                     </TabsContent>
                     <TabsContent value="todo" className="mt-6 mb-2">
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -254,14 +283,83 @@ export function Playground() {
     );
 }
 
-function AddTask() {
+function AddTask(change, setChange) {
     const [dialogOpen, setDialogOpen] = useState(false);
+
+    const { toast } = useToast();
+
+    const [date, setDate] = useState(new Date());
+
+    const [description, setDescription] = useState("");
+
+    async function Confirmed() {
+        let month_ = format(date, "MMM"); // May
+        let date_ = format(date, "d"); // 15
+        let year_ = format(date, "yyyy"); // 2023
+        let status = "todo";
+        if (description.length > 50) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description with less than 51 characters.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description === "" || description === null) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description for the task.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (date === "" || date === null) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please select a date for the task.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+
+        let insertData = await database.sql(`INSERT INTO data (description, month_, date_, year_, status) VALUES ('${description}', '${month_}', '${date_}', '${year_}', '${status}');`);
+
+        console.log("insertData", insertData);
+
+        setDialogOpen(false);
+
+        toast(
+            {
+                title: "Success",
+                description: "Task added successfully.",
+                variant: "success",
+            }
+        );
+
+        change ? setChange(false) : setChange(true);
+        return;
+    }
+
+    function openedDialog() {
+        setDialogOpen(true);
+        setDate(new Date());
+        setDescription("");
+    }
+
     return (
         (
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen} className="w-full max-w-md"
             >
+                <Toaster />
                 <DialogTrigger>
-                    <Button className="text-white hover:bg-white" size="icon" variant="ghost">
+                    <Button onClick={openedDialog}
+                        className="text-white hover:bg-white" size="icon" variant="ghost">
                         <PlusIcon className="w-5 h-5" />
                         <span className="sr-only">Add Task</span>
                     </Button>
@@ -279,35 +377,40 @@ function AddTask() {
                             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
                                 <form>
                                     <div className="mb-4">
-                                        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
+                                        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Due Date</label>
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button
                                                     variant={"outline"}
                                                     className={cn(
                                                         "w-[280px] justify-start text-left font-normal",
-                                                        "text-muted-foreground mt-2",
+                                                        !date && "text-muted-foreground"
                                                     )}
                                                 >
                                                     <CalendarIcon_ className="mr-2 h-4 w-4" />
-                                                    <span className="text-muted-foreground">Select Date</span>
+                                                    {date ? format(date, "PPP") : <span>Pick a date</span>}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0">
                                                 <Calendar
                                                     mode="single"
-                                                    showOutsideDays={true}
+                                                    selected={date}
+                                                    onSelect={setDate}
+                                                    className="rounded-md border"
                                                 />
                                             </PopoverContent>
                                         </Popover>
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                                        <Input type="text" id="description" name="description" className="mt-2 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                        <Input value={description} onChange={(e) => setDescription(e.target.value)}
+                                            type="text" placeholder="Enter text here" id="description" name="description" className="mt-2 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                                     </div>
                                     <div className="flex justify-end gap-4 mt-6">
-                                        <Button type="button" variant="destructive">Cancel</Button>
-                                        <Button type="button" variant="default">Add Task</Button>
+                                        <Button onClick={() => setDialogOpen(false)}
+                                            type="button" variant="destructive">Cancel</Button>
+                                        <Button onClick={Confirmed}
+                                            type="button" variant="default">Add Task</Button>
                                     </div>
                                 </form>
                             </div>
@@ -318,6 +421,7 @@ function AddTask() {
         )
     );
 }
+
 
 function CalendarIcon(props) {
     return (
