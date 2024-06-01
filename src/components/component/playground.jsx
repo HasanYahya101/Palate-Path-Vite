@@ -21,9 +21,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-export function Playground() {
+let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
 
-    let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
+export function Playground() {
 
     const [change, setChange] = useState(false);
 
