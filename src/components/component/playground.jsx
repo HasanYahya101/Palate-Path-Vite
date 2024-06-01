@@ -39,9 +39,17 @@ export function Playground() {
 
     const [todoTasks, setTodoTasks] = useState([]);
 
+    const [inProgressTasks, setInProgressTasks] = useState([]);
+
     async function checkToDo(id) {
         let todoData = await database.sql(`UPDATE data SET status = "inprogress" WHERE status = "todo" AND id = ${id};`);
         console.log("todoData", todoData);
+        switchChange();
+    }
+
+    async function checkInprog(id) {
+        let inProgressData = await database.sql(`UPDATE data SET status = "done" WHERE status = "inprogress" AND id = ${id};`);
+        console.log("inProgressData", inProgressData);
         switchChange();
     }
 
@@ -67,6 +75,13 @@ export function Playground() {
         setTodoTasks(todoData);
     }
 
+    async function fetchinProgressData() {
+        let inProgressData = await database.sql('SELECT * FROM data WHERE status = "inprogress";');
+        console.log("inProgressData", inProgressData);
+        // set data to state
+        setInProgressTasks(inProgressData);
+    }
+
     async function switchChange() {
         change ? setChange(false) : setChange(true);
     }
@@ -81,6 +96,7 @@ export function Playground() {
         fetchDoneData();
         fetchAllData();
         fetchTodoData();
+        fetchinProgressData();
     }, [change]);
 
     return (
@@ -109,24 +125,15 @@ export function Playground() {
                             </TabsList>
                         </div>
                         <div className="flex items-center gap-2">
-                            <Button
-                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                size="icon"
-                                variant="ghost">
-                                <CalendarIcon className="w-5 h-5" />
-                                <span className="sr-only">Calendar</span>
-                            </Button>
-                            <Button
-                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                size="icon"
-                                variant="ghost">
-                                <SearchIcon className="w-5 h-5" />
-                                <span className="sr-only">Search</span>
-                            </Button>
+
+                            <ApplyDateFilter setDoneTasks={setDoneTasks} setAllTasks={setAllTasks} setTodoTasks={setTodoTasks} setInProgressTasks={setInProgressTasks}
+                            />
+                            <ApplySearchFilter setDoneTasks={setDoneTasks} setAllTasks={setAllTasks} setTodoTasks={setTodoTasks} setInProgressTasks={setInProgressTasks}
+                            />
                         </div>
                     </div>
                     <TabsContent value="all" className="mt-6 mb-2">
-                        {allTasks.length === 0 || allTasks.size === 0 || allTasks === null ? (
+                        {allTasks === null || allTasks.length === 0 || allTasks.size === 0 ? (
                             <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
                                 <div className="flex flex-col items-center gap-4">
                                     <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
@@ -211,7 +218,7 @@ export function Playground() {
                                             </Button>
                                             <EditTodo id={task.id} setChange={setChange} change={change}
                                             />
-                                            <Button onClick={() => delTask("todo", task.id)}
+                                            <Button onClick={() => delTask(task.status, task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                                                 size="icon"
                                                 variant="ghost">
@@ -225,43 +232,52 @@ export function Playground() {
                         )}
                     </TabsContent>
                     <TabsContent value="inprogress" className="mt-6 mb-2">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
+                        {inProgressTasks.length === 0 || inProgressTasks.size === 0 || inProgressTasks === null ? (
+                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                                <div className="flex flex-col items-center gap-4">
+                                    <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                                    <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        Please add a task to see it here.
+                                    </p>
+                                </div>
                             </Card>
-                        </div>
+                        ) : (
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {inProgressTasks.map((task) => (
+                                    <Card className="flex flex-col justify-between h-full">
+                                        <CardHeader>
+                                            <CardTitle>{task.description}</CardTitle>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">Due: {task.month_} {task.date_}, {task.year_}</div>
+                                        </CardHeader>
+                                        <CardContent className="justify-between h-full">
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2 w-2 rounded-full bg-red-500" />
+                                                <span className="text-sm font-medium">In Progress</span>
+                                            </div>
+                                        </CardContent>
+                                        <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
+                                            <Button onClick={() => checkInprog(task.id)}
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <CheckIcon className="w-5 h-5" />
+                                                <span className="sr-only">Mark as Done</span>
+                                            </Button>
+                                            <EditTodo id={task.id} setChange={setChange} change={change}
+                                            />
+                                            <Button onClick={() => delTask(task.status, task.id)}
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <TrashIcon className="w-5 h-5" />
+                                                <span className="sr-only">Delete Task</span>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
                     </TabsContent>
                     <TabsContent value="done" className="mt-6 mb-2">
                         {doneTasks.length === 0 || doneTasks.size === 0 || doneTasks === null ? (
@@ -289,7 +305,7 @@ export function Playground() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button onClick={() => delTask("done", task.id)}
+                                            <Button onClick={() => delTask(task.status, task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                                                 size="icon"
                                                 variant="ghost">
@@ -305,6 +321,245 @@ export function Playground() {
                 </Tabs>
             </main >
         </div >)
+    );
+}
+
+function ApplySearchFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgressTasks }) {
+
+    const { toast } = useToast();
+
+    const [isOpen, setIsOpen] = useState(false);
+
+    const [description, setDescription] = useState("");
+
+    const filter = new Filter();
+
+    function Confirmed() {
+        if (filter.isProfane(description)) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description without any profanity.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description.length <= 5) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description with more than 5 characters.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description.length > 50) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description with less than 51 characters.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description === "" || description === null) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description for the task.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+
+        let doneData = database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "done";`);
+        console.log("doneData", doneData);
+        setDoneTasks(doneData);
+
+        let allData = database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%';`);
+        console.log("allData", allData);
+        setAllTasks(allData);
+
+        let todoData = database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "todo";`);
+        console.log("todoData", todoData);
+        setTodoTasks(todoData);
+
+        let inProgressData = database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "inprogress";`);
+        console.log("inProgressData", inProgressData);
+        setInProgressTasks(inProgressData);
+
+        toast(
+            {
+                title: "Success",
+                description: "Search filter applied successfully.",
+                variant: "success",
+            }
+        );
+
+        setIsOpen(false);
+    }
+
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-md"
+        >
+            <DialogTrigger>
+                <Button onClick={() => setDescription("")}
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                    size="icon"
+                    variant="ghost">
+                    <SearchIcon className="w-5 h-5" />
+                    <span className="sr-only">Search</span>
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogDescription>
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl text-black font-bold"
+                        >Apply Search Filter</DialogTitle>
+                        <DialogDescription>
+                            Filter tasks based on the description.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Card className=" flex items-center justify-center mt-4">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+                            <form>
+                                <div className="mb-4">
+                                    <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                                    <Input value={description} onChange={(e) => setDescription(e.target.value)}
+                                        type="text" placeholder="Enter text here" id="description" name="description" className="mt-2 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                </div>
+                                <div className="flex justify-end gap-4 mt-6">
+                                    <Button onClick={() => setIsOpen(false)}
+                                        type="button" variant="destructive">Cancel</Button>
+                                    <Button onClick={() => Confirmed()}
+                                        type="button" variant="default">Apply Filter</Button>
+                                </div>
+                            </form>
+                        </div>
+                    </Card>
+                </DialogDescription>
+            </DialogContent>
+        </Dialog>
+
+    );
+}
+
+function ApplyDateFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgressTasks }) {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const [date, setDate] = useState(new Date());
+
+    const { toast } = useToast();
+
+    async function Confirmed() {
+
+        if (date === "" || date === null || date === undefined) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please select a date for the task.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+
+        let month_ = format(date, "MMM"); // May
+        let date_ = format(date, "d"); // 15
+        let year_ = format(date, "yyyy"); // 2023
+
+        let doneData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}' AND status = "done";`);
+        console.log("doneData", doneData);
+        setDoneTasks(doneData);
+
+        let allData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}';`);
+        console.log("allData", allData);
+        setAllTasks(allData);
+
+        let todoData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}' AND status = "todo";`);
+        console.log("todoData", todoData);
+        setTodoTasks(todoData);
+
+        let inProgressData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}' AND status = "inprogress";`);
+        console.log("inProgressData", inProgressData);
+        setInProgressTasks(inProgressData);
+
+        toast(
+            {
+                title: "Success",
+                description: "Date filter applied successfully.",
+                variant: "success",
+            }
+        );
+
+        setIsOpen(false);
+    }
+
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-md"
+        >
+            <DialogTrigger>
+                <Button onClick={() => setDate(new Date())}
+                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                    size="icon"
+                    variant="ghost">
+                    <CalendarIcon className="w-5 h-5" />
+                    <span className="sr-only">Calendar</span>
+                </Button>
+            </DialogTrigger>
+            <DialogContent>
+                <DialogDescription>
+                    <DialogHeader>
+                        <DialogTitle className="text-2xl text-black font-bold"
+                        >Apply Date Filter</DialogTitle>
+                        <DialogDescription>
+                            Filter tasks based on the due date.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Card className=" flex items-center justify-center mt-4">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+                            <form>
+                                <div className="mb-4">
+                                    <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Due Date</label>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant={"outline"}
+                                                className={cn(
+                                                    "w-[280px] justify-start text-left font-normal",
+                                                    !date && "text-muted-foreground"
+                                                )}
+                                            >
+                                                <CalendarIcon_ className="mr-2 h-4 w-4" />
+                                                {date ? format(date, "PPP") : <span>Pick a date</span>}
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-auto p-0">
+                                            <Calendar
+                                                mode="single"
+                                                className="rounded-md border"
+                                                selected={date}
+                                                onSelect={setDate}
+                                            />
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                                <div className="flex justify-end gap-4 mt-6">
+                                    <Button onClick={() => setIsOpen(false)}
+                                        type="button" variant="destructive">Cancel</Button>
+                                    <Button onClick={() => Confirmed()}
+                                        type="button" variant="default">Apply Filter</Button>
+                                </div>
+                            </form>
+                        </div>
+                    </Card>
+                </DialogDescription>
+            </DialogContent>
+        </Dialog>
     );
 }
 
