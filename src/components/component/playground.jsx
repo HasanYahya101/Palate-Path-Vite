@@ -44,12 +44,26 @@ export function Playground() {
     async function checkToDo(id) {
         let todoData = await database.sql(`UPDATE data SET status = "inprogress" WHERE status = "todo" AND id = ${id};`);
         console.log("todoData", todoData);
+        toast(
+            {
+                title: "Success",
+                description: "Task moved to In Progress.",
+                variant: "success",
+            }
+        );
         switchChange();
     }
 
     async function checkInprog(id) {
         let inProgressData = await database.sql(`UPDATE data SET status = "done" WHERE status = "inprogress" AND id = ${id};`);
         console.log("inProgressData", inProgressData);
+        toast(
+            {
+                title: "Success",
+                description: "Task marked as Done.",
+                variant: "success",
+            }
+        );
         switchChange();
     }
 
