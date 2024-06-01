@@ -3,11 +3,23 @@ import { CardTitle, CardHeader, CardContent, CardFooter, Card } from "@/componen
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from 'react';
 import { Database } from '@sqlitecloud/drivers';
+import { Calendar as CalendarIcon_ } from "lucide-react";
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { Calendar } from '../ui/calendar';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 
 export function Playground() {
@@ -245,62 +257,66 @@ export function Playground() {
 
 function AddTask() {
     return (
-        (<Popover placement="bottom">
-            <PopoverTrigger><Button className="text-white hover:bg-white" size="icon" variant="ghost">
-                <PlusIcon className="w-5 h-5" />
-                <span className="sr-only">Add Task</span>
-            </Button></PopoverTrigger>
-            <PopoverContent>
-                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full max-w-md">
-                        <h2 className="text-2xl font-bold mb-4">Add Task</h2>
-                        <form>
-                            <div className="mb-4">
-                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                                <input type="text" id="description" name="description" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+        (
+            <Dialog>
+                <DialogTrigger>
+                    <Button className="text-white hover:bg-white" size="icon" variant="ghost">
+                        <PlusIcon className="w-5 h-5" />
+                        <span className="sr-only">Add Task</span>
+                    </Button>
+                </DialogTrigger>
+                <DialogContent>
+                    <DialogDescription>
+                        <DialogHeader>
+                            <DialogTitle className="text-2xl text-black font-bold"
+                            >Add Task</DialogTitle>
+                            <DialogDescription>
+                                Add a new task to your list. This will help you keep track of what you need to do.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <Card className=" flex items-center justify-center mt-4">
+                            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md">
+                                <form>
+                                    <div className="mb-4">
+                                        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant={"outline"}
+                                                    className={cn(
+                                                        "w-[280px] justify-start text-left font-normal",
+                                                        "text-muted-foreground mt-2",
+                                                    )}
+                                                >
+                                                    <CalendarIcon_ className="mr-2 h-4 w-4" />
+                                                    <span className="text-muted-foreground">Select Date</span>
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0">
+                                                <Calendar
+                                                    mode="single"
+                                                    showOutsideDays={true}
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>
+                                    <div className="mb-4">
+                                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                        <Input type="text" id="description" name="description" className="mt-2 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                                    </div>
+                                    <div className="flex justify-end gap-4 mt-6">
+                                        <Button type="button" variant="destructive">Cancel</Button>
+                                        <Button type="confirm" variant="default">Add Task</Button>
+                                    </div>
+                                </form>
                             </div>
-                            <div className="mb-4">
-                                <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
-                                <input type="date" id="dueDate" name="dueDate" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                            </div>
-                            <div className="flex justify-end gap-4">
-                                <button type="button" className="bg-gray-900 text-white px-4 py-2 rounded-md">Cancel</button>
-                                <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Task</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </PopoverContent>
-        </Popover>
+                        </Card>
+                    </DialogDescription>
+                </DialogContent>
+            </Dialog >
         )
     );
 }
-
-/*
-function AddTask() {
-    return (
-        (<div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-            <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-4">Add Task</h2>
-                <form>
-                    <div className="mb-4">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
-                        <input type="text" id="description" name="description" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
-                        <input type="date" id="dueDate" name="dueDate" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
-                    </div>
-                    <div className="flex justify-end gap-4">
-                        <button type="button" className="bg-gray-900 text-white px-4 py-2 rounded-md">Cancel</button>
-                        <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Task</button>
-                    </div>
-                </form>
-            </div>
-        </div>)
-    );
-}
-*/
 
 function CalendarIcon(props) {
     return (
