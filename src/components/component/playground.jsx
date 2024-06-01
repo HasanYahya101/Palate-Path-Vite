@@ -1,8 +1,27 @@
-import { Button } from "@/components/ui/button"
-import { CardTitle, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button";
+import { CardTitle, CardHeader, CardContent, CardFooter, Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState, useEffect } from 'react';
+import { Database } from '@sqlitecloud/drivers';
 
 export function Playground() {
+
+    let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
+
+    const [doneTasks, setDoneTasks] = useState([]);
+
+    // async function get data
+    async function fetchDoneData() {
+        let doneData = await database.sql('SELECT * FROM data WHERE status = "done";');
+        console.log("doneData", doneData);
+        // set data to state
+        setDoneTasks(doneData);
+    }
+
+    useEffect(() => {
+        //fetchDoneData();
+    }, []);
+
     return (
         (<div className="flex flex-col h-screen">
             <header
@@ -49,396 +68,10 @@ export function Playground() {
                     </div>
                     <TabsContent value="all" className="mt-6 mb-2">
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Finish wireframes for new homepage</CardTitle>
                                     <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-center gap-2">
@@ -474,396 +107,10 @@ export function Playground() {
                     </TabsContent>
                     <TabsContent value="todo" className="mt-6 mb-2">
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Finish wireframes for new homepage</CardTitle>
                                     <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-center gap-2">
@@ -899,396 +146,10 @@ export function Playground() {
                     </TabsContent>
                     <TabsContent value="inprogress" className="mt-6 mb-2">
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
                             <Card>
                                 <CardHeader>
                                     <CardTitle>Finish wireframes for new homepage</CardTitle>
                                     <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-red-500" />
-                                        <span className="text-sm font-medium">To Do</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex items-center gap-2">
@@ -1323,92 +184,45 @@ export function Playground() {
                         </div>
                     </TabsContent>
                     <TabsContent value="done" className="mt-6 mb-2">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
+                        {doneTasks.length === 0 || doneTasks.size === 0 || doneTasks === null ? (
+                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+
+                                <div className="flex flex-col items-center gap-4">
+                                    <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                                    <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        Please add a task to see it here.
+                                    </p>
+                                </div>
                             </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Implement new design system</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 1, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Write blog post on Tailwind CSS</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 30, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Refactor API endpoints</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: June 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-green-500" />
-                                        <span className="text-sm font-medium">Done</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
-                            </Card>
-                        </div>
+                        ) : (
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {doneTasks.map((task) => (
+                                    <Card className="flex flex-col justify-between h-full">
+                                        <CardHeader>
+                                            <CardTitle>{task.description}</CardTitle>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">Due: {task.month_} {task.date_}, {task.year_}</div>
+                                        </CardHeader>
+                                        <CardContent className="justify-between h-full">
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2 w-2 rounded-full bg-green-500" />
+                                                <span className="text-sm font-medium">Done</span>
+                                            </div>
+                                        </CardContent>
+                                        <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
+                                            <Button
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <TrashIcon className="w-5 h-5" />
+                                                <span className="sr-only">Delete Task</span>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+
+                            </div>
+                        )}
                     </TabsContent>
                 </Tabs>
             </main >
@@ -1437,7 +251,6 @@ function CalendarIcon(props) {
     );
 }
 
-
 function CheckIcon(props) {
     return (
         (<svg
@@ -1455,7 +268,6 @@ function CheckIcon(props) {
         </svg>)
     );
 }
-
 
 function ClipboardListIcon(props) {
     return (
@@ -1481,7 +293,6 @@ function ClipboardListIcon(props) {
     );
 }
 
-
 function DeleteIcon(props) {
     return (
         (<svg
@@ -1501,6 +312,21 @@ function DeleteIcon(props) {
         </svg>)
     );
 }
+
+function NotFoundIcon(props) {
+    return (
+        <svg
+            {...props}
+            width="800" height="800" viewBox="0 0 14 14"
+            xmlns="http://www.w3.org/2000/svg" >
+            <path d="M7 14A7 7 0 1 1 7 0a7 7 0 0 1 0 14z" />
+            <path d="M7 13A6 6 0 1 0 7 1a6 6 0 0 0 0 12z" fill="#FFF" style={{ fill: 'var(--svg-status-bg, #fff)' }} fillRule="nonzero" />
+            <path d="M8.16 7.184c.519-.37.904-.857 1.07-1.477.384-1.427-.619-2.897-2.246-2.897-.732 0-1.327.26-1.766.692a2.163 2.163 0 0 0-.509.743.75.75 0 0 0 1.4.54.78.78 0 0 1 .16-.213c.168-.165.39-.262.715-.262.597 0 .936.496.798 1.007-.067.249-.235.462-.492.644-.231.165-.47.264-.601.3a.75.75 0 0 0-.556.724v1.421a.75.75 0 0 0 1.5 0v-.909c.168-.082.346-.185.526-.313z" fillRule="nonzero" />
+            <ellipse cx="6.889" cy="10.634" rx="1" ry="1" />
+        </svg>
+    );
+}
+
 
 
 function PlusIcon(props) {
@@ -1522,7 +348,6 @@ function PlusIcon(props) {
     );
 }
 
-
 function SearchIcon(props) {
     return (
         (<svg
@@ -1541,7 +366,6 @@ function SearchIcon(props) {
         </svg>)
     );
 }
-
 
 function TrashIcon(props) {
     return (
