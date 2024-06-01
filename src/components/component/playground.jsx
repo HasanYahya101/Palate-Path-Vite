@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from 'react';
 import { Database } from '@sqlitecloud/drivers';
 import { Calendar as CalendarIcon_ } from "lucide-react";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import {
     Popover,
     PopoverContent,
@@ -311,6 +311,8 @@ export function Playground() {
 function EditTodo(id, setChange, change) {
     // this function edits the description of task
 
+    const [isOpen, setIsOpen] = useState(false);
+
     const { toast } = useToast();
 
     const [description_, setDescription_] = useState("");
@@ -372,13 +374,18 @@ function EditTodo(id, setChange, change) {
                 variant: "success",
             }
         );
+        setIsOpen(false);
+
         change ? setChange(false) : setChange(true);
+
         setDescription_("");
+        return;
     }
 
     return (
         (
-            <Popover>
+            <Popover open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-md"
+            >
                 <PopoverTrigger>
                     <Button onClick={() => setDescription_("")}
                         className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
