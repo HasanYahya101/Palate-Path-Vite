@@ -6,7 +6,7 @@ A Simple CRUD based task tracking application that uses SQLite Cloud for databas
 
 ## UI Library
 
-Radix UI and ShadCN components were used to create the UI of the website. Moreover, Vite was used to create this React Project.
+Radix UI and ShadCN components were used to create the UI of the website. Moreover, Vite was used to create this React Project. Moreover, for Database [SQLite Cloud](https://sqlitecloud.io/) was used. The schema built file can be found in Resources.
 
 ## Deployment
 
