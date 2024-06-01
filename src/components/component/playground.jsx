@@ -209,7 +209,7 @@ export function Playground() {
                                                 <CheckIcon className="w-5 h-5" />
                                                 <span className="sr-only">Mark as Done</span>
                                             </Button>
-                                            <EditTodo id={task.id} setChange={setChange} change={change} setAllNull={setAllNull}
+                                            <EditTodo id={task.id} setChange={setChange} change={change}
                                             />
                                             <Button onClick={() => delTask("todo", task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
@@ -308,7 +308,7 @@ export function Playground() {
     );
 }
 
-function EditTodo({ id, setChange, change, setAllNull }) {
+function EditTodo({ id, setChange, change }) {
     // this function edits the description of task
 
     const [isOpen, setIsOpen] = useState(false);
