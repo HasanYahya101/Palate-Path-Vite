@@ -3,6 +3,12 @@ import { CardTitle, CardHeader, CardContent, CardFooter, Card } from "@/componen
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from 'react';
 import { Database } from '@sqlitecloud/drivers';
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+
 
 export function Playground() {
 
@@ -36,17 +42,13 @@ export function Playground() {
 
     return (
         (<div className="flex flex-col h-screen">
-            <AddTask />
             <header
                 className="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <ClipboardListIcon className="w-6 h-6" />
                     <h1 className="text-2xl font-bold"> PalatePath</h1>
                 </div>
-                <Button className="text-white hover:bg-white" size="icon" variant="ghost">
-                    <PlusIcon className="w-5 h-5" />
-                    <span className="sr-only">Add Task</span>
-                </Button>
+                <AddTask />
             </header>
 
             <main className="flex-1 bg-gray-100 dark:bg-gray-900 p-6 grid gap-6">
@@ -243,6 +245,40 @@ export function Playground() {
 
 function AddTask() {
     return (
+        (<Popover placement="bottom">
+            <PopoverTrigger><Button className="text-white hover:bg-white" size="icon" variant="ghost">
+                <PlusIcon className="w-5 h-5" />
+                <span className="sr-only">Add Task</span>
+            </Button></PopoverTrigger>
+            <PopoverContent>
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full max-w-md">
+                        <h2 className="text-2xl font-bold mb-4">Add Task</h2>
+                        <form>
+                            <div className="mb-4">
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                <input type="text" id="description" name="description" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Due Date</label>
+                                <input type="date" id="dueDate" name="dueDate" className="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </div>
+                            <div className="flex justify-end gap-4">
+                                <button type="button" className="bg-gray-900 text-white px-4 py-2 rounded-md">Cancel</button>
+                                <button type="submit" className="bg-indigo-500 text-white px-4 py-2 rounded-md">Add Task</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </PopoverContent>
+        </Popover>
+        )
+    );
+}
+
+/*
+function AddTask() {
+    return (
         (<div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-4">Add Task</h2>
@@ -264,6 +300,7 @@ function AddTask() {
         </div>)
     );
 }
+*/
 
 function CalendarIcon(props) {
     return (
