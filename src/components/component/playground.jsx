@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
+import Filter from 'bad-words';
 
 
 let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
@@ -316,12 +317,25 @@ function AddTask(change, setChange) {
 
     const [description, setDescription] = useState("");
 
+    const filter = new Filter();
+
     async function Confirmed() {
         let month_ = format(date, "MMM"); // May
         let date_ = format(date, "d"); // 15
         let year_ = format(date, "yyyy"); // 2023
         let status = "todo";
-        if (description.length > 50) {
+
+        if (filter.isProfane(description)) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description without any profanity.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description.length > 50) {
             toast(
                 {
                     title: "Error",
