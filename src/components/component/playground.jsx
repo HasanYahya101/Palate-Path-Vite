@@ -209,7 +209,7 @@ export function Playground() {
                                                 <CheckIcon className="w-5 h-5" />
                                                 <span className="sr-only">Mark as Done</span>
                                             </Button>
-                                            <EditTodo id={task.id} setChange={setChange}
+                                            <EditTodo id={task.id} setChange={setChange} change={change}
                                             />
                                             <Button onClick={() => delTask("todo", task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
@@ -308,7 +308,7 @@ export function Playground() {
     );
 }
 
-function EditTodo(id, setChange) {
+function EditTodo(id, setChange, change) {
     // this function edits the description of task
 
     const { toast } = useToast();
@@ -361,7 +361,7 @@ function EditTodo(id, setChange) {
             return;
         }
 
-        let updateData = await database.sql(`UPDATE data SET description = '${description_}' WHERE id = ${id};`);
+        let updateData = await database.sql(`UPDATE data SET description = '${description_}' WHERE id = ${id.id};`);
 
         console.log("updateData", updateData);
 
@@ -372,9 +372,8 @@ function EditTodo(id, setChange) {
                 variant: "success",
             }
         );
-
+        change ? setChange(false) : setChange(true);
         setDescription_("");
-        setChange ? setChange(false) : setChange(true);
     }
 
     return (
