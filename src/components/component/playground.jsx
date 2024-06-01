@@ -365,6 +365,8 @@ function EditTodo(id, setChange, change) {
 
         let updateData = await database.sql(`UPDATE data SET description = '${description_}' WHERE id = ${id.id};`);
 
+        setIsOpen(false);
+
         console.log("updateData", updateData);
 
         toast(
@@ -374,11 +376,8 @@ function EditTodo(id, setChange, change) {
                 variant: "success",
             }
         );
-        setIsOpen(false);
 
         change ? setChange(false) : setChange(true);
-
-        setDescription_("");
         return;
     }
 
