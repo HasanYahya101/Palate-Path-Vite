@@ -43,7 +43,6 @@ export function Playground() {
 
     async function checkToDo(id) {
         let todoData = await database.sql(`UPDATE data SET status = "inprogress" WHERE status = "todo" AND id = ${id};`);
-        console.log("todoData", todoData);
         toast(
             {
                 title: "Success",
@@ -56,7 +55,6 @@ export function Playground() {
 
     async function checkInprog(id) {
         let inProgressData = await database.sql(`UPDATE data SET status = "done" WHERE status = "inprogress" AND id = ${id};`);
-        console.log("inProgressData", inProgressData);
         toast(
             {
                 title: "Success",
@@ -70,28 +68,24 @@ export function Playground() {
     // async function get data
     async function fetchDoneData() {
         let doneData = await database.sql('SELECT * FROM data WHERE status = "done";');
-        console.log("doneData", doneData);
         // set data to state
         setDoneTasks(doneData);
     }
 
     async function fetchAllData() {
         let allData = await database.sql('SELECT * FROM data;');
-        console.log("AllData", allData);
         // set data to state
         setAllTasks(allData);
     }
 
     async function fetchTodoData() {
         let todoData = await database.sql('SELECT * FROM data WHERE status = "todo";');
-        console.log("todoData", todoData);
         // set data to state
         setTodoTasks(todoData);
     }
 
     async function fetchinProgressData() {
         let inProgressData = await database.sql('SELECT * FROM data WHERE status = "inprogress";');
-        console.log("inProgressData", inProgressData);
         // set data to state
         setInProgressTasks(inProgressData);
     }
@@ -102,7 +96,6 @@ export function Playground() {
 
     async function delTask(status, id) {
         let delData = await database.sql(`DELETE FROM data WHERE status = '${status}' AND id = ${id} AND EXISTS (SELECT 1 FROM data WHERE status = '${status}' AND id = ${id});`);
-        console.log("delData", delData);
         switchChange();
     }
 
@@ -117,16 +110,12 @@ export function Playground() {
         // check if there are 1000 or more rows in database table data, if yes delete the oldest 500 rows
         let query = `SELECT COUNT(*) FROM data;`
         let count = await database.sql(query);
-        console.log("count", count);
         let row_0 = count[0];
-        console.log("row_0", row_0);
         let COUNT = row_0["COUNT(*)"];
-        console.log("COUNT", COUNT);
 
         if (COUNT >= 1000) {
             let query = `DELETE FROM data WHERE id IN (SELECT id FROM data ORDER BY id ASC LIMIT 500);`
             let deleteData = await database.sql(query);
-            console.log("deleteData", deleteData);
         }
         return;
     }
@@ -413,19 +402,15 @@ function ApplySearchFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgr
         }
 
         let doneData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "done";`);
-        console.log("doneData", doneData);
         setDoneTasks(doneData);
 
         let allData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%';`);
-        console.log("allData", allData);
         setAllTasks(allData);
 
         let todoData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "todo";`);
-        console.log("todoData", todoData);
         setTodoTasks(todoData);
 
         let inProgressData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "inprogress";`);
-        console.log("inProgressData", inProgressData);
         setInProgressTasks(inProgressData);
 
         toast(
@@ -509,19 +494,15 @@ function ApplyDateFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgres
         let year_ = format(date, "yyyy"); // 2023
 
         let doneData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}' AND status = "done";`);
-        console.log("doneData", doneData);
         setDoneTasks(doneData);
 
         let allData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}';`);
-        console.log("allData", allData);
         setAllTasks(allData);
 
         let todoData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}' AND status = "todo";`);
-        console.log("todoData", todoData);
         setTodoTasks(todoData);
 
         let inProgressData = await database.sql(`SELECT * FROM data WHERE month_ = '${month_}' AND date_ = '${date_}' AND year_ = '${year_}' AND status = "inprogress";`);
-        console.log("inProgressData", inProgressData);
         setInProgressTasks(inProgressData);
 
         toast(
@@ -608,7 +589,6 @@ function EditTodo({ id, setChange, change }) {
 
     const [description_, setDescription_] = useState("");
 
-    console.log("id", id);
 
     const filter = new Filter();
 
@@ -658,7 +638,6 @@ function EditTodo({ id, setChange, change }) {
 
         setIsOpen(false);
 
-        console.log("updateData", updateData);
 
         toast(
             {
@@ -779,7 +758,6 @@ function AddTask({ change, setChange }) {
 
         let insertData = await database.sql(`INSERT INTO data (description, month_, date_, year_, status) VALUES ('${description}', '${month_}', '${date_}', '${year_}', '${status}');`);
 
-        console.log("insertData", insertData);
 
         setDialogOpen(false);
 
