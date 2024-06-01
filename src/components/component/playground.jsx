@@ -376,19 +376,19 @@ function ApplySearchFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgr
             return;
         }
 
-        let doneData = await database.sql(`SELECT * FROM data WHERE description = '%${description}%' AND status = "done";`);
+        let doneData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "done";`);
         console.log("doneData", doneData);
         setDoneTasks(doneData);
 
-        let allData = await database.sql(`SELECT * FROM data WHERE description = '%${description}%';`);
+        let allData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%';`);
         console.log("allData", allData);
         setAllTasks(allData);
 
-        let todoData = await database.sql(`SELECT * FROM data WHERE description = '%${description}%' AND status = "todo";`);
+        let todoData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "todo";`);
         console.log("todoData", todoData);
         setTodoTasks(todoData);
 
-        let inProgressData = await database.sql(`SELECT * FROM data WHERE description = '%${description}%' AND status = "inprogress";`);
+        let inProgressData = await database.sql(`SELECT * FROM data WHERE description LIKE '%${description}%' AND status = "inprogress";`);
         console.log("inProgressData", inProgressData);
         setInProgressTasks(inProgressData);
 
