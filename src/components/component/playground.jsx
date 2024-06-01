@@ -37,6 +37,8 @@ export function Playground() {
 
     const [allTasks, setAllTasks] = useState([]);
 
+    const [todoTasks, setTodoTasks] = useState([]);
+
     // async function get data
     async function fetchDoneData() {
         let doneData = await database.sql('SELECT * FROM data WHERE status = "done";');
@@ -52,6 +54,13 @@ export function Playground() {
         setAllTasks(allData);
     }
 
+    async function fetchTodoData() {
+        let todoData = await database.sql('SELECT * FROM data WHERE status = "todo";');
+        console.log("todoData", todoData);
+        // set data to state
+        setTodoTasks(todoData);
+    }
+
     async function switchChange() {
         change ? setChange(false) : setChange(true);
     }
@@ -65,6 +74,7 @@ export function Playground() {
     useEffect(() => {
         fetchDoneData();
         fetchAllData();
+        fetchTodoData();
     }, [change]);
 
     return (
@@ -147,7 +157,7 @@ export function Playground() {
                                             )}
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button onClick={() => delTask("done", task.id)}
+                                            <Button onClick={() => delTask(task.status, task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                                                 size="icon"
                                                 variant="ghost">
@@ -161,43 +171,57 @@ export function Playground() {
                         )}
                     </TabsContent>
                     <TabsContent value="todo" className="mt-6 mb-2">
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Finish wireframes for new homepage</CardTitle>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">Due: May 15, 2023</div>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex items-center gap-2">
-                                        <div className="h-2 w-2 rounded-full bg-yellow-500" />
-                                        <span className="text-sm font-medium">In Progress</span>
-                                    </div>
-                                </CardContent>
-                                <CardFooter className="flex items-center justify-end gap-2">
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <CheckIcon className="w-5 h-5" />
-                                        <span className="sr-only">Mark as Done</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <DeleteIcon className="w-5 h-5" />
-                                        <span className="sr-only">Edit Task</span>
-                                    </Button>
-                                    <Button
-                                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                        size="icon"
-                                        variant="ghost">
-                                        <TrashIcon className="w-5 h-5" />
-                                        <span className="sr-only">Delete Task</span>
-                                    </Button>
-                                </CardFooter>
+                        {todoTasks.length === 0 || todoTasks.size === 0 || todoTasks === null ? (
+                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                                <div className="flex flex-col items-center gap-4">
+                                    <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
+                                    <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        Please add a task to see it here.
+                                    </p>
+                                </div>
                             </Card>
-                        </div>
+                        ) : (
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                                {todoTasks.map((task) => (
+                                    <Card className="flex flex-col justify-between h-full">
+                                        <CardHeader>
+                                            <CardTitle>{task.description}</CardTitle>
+                                            <div className="text-sm text-gray-500 dark:text-gray-400">Due: {task.month_} {task.date_}, {task.year_}</div>
+                                        </CardHeader>
+                                        <CardContent className="justify-between h-full">
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-2 w-2 rounded-full bg-yellow-500" />
+                                                <span className="text-sm font-medium">To Do</span>
+                                            </div>
+                                        </CardContent>
+                                        <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
+                                            <Button
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <CheckIcon className="w-5 h-5" />
+                                                <span className="sr-only">Mark as Done</span>
+                                            </Button>
+                                            <Button
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <DeleteIcon className="w-5 h-5" />
+                                                <span className="sr-only">Edit Task</span>
+                                            </Button>
+                                            <Button onClick={() => delTask("todo", task.id)}
+                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                size="icon"
+                                                variant="ghost">
+                                                <TrashIcon className="w-5 h-5" />
+                                                <span className="sr-only">Delete Task</span>
+                                            </Button>
+                                        </CardFooter>
+                                    </Card>
+                                ))}
+                            </div>
+                        )}
                     </TabsContent>
                     <TabsContent value="inprogress" className="mt-6 mb-2">
                         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
