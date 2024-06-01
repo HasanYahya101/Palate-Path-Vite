@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Intro
+A Simple CRUD based task tracking application that uses SQLite Cloud for database. It allows for moving tasks through states such as to-do, in-progress and done. It also allows for filtering of tasks.
 
 ## UI Library
 
