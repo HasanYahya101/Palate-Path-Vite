@@ -40,6 +40,12 @@ export function Playground() {
 
     const [todoTasks, setTodoTasks] = useState([]);
 
+    async function checkToDo(id) {
+        let todoData = await database.sql(`UPDATE data SET status = "inprogress" WHERE status = "todo" AND id = ${id};`);
+        console.log("todoData", todoData);
+        switchChange();
+    }
+
     // async function get data
     async function fetchDoneData() {
         let doneData = await database.sql('SELECT * FROM data WHERE status = "done";');
@@ -197,7 +203,7 @@ export function Playground() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button
+                                            <Button onClick={() => checkToDo(task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                                                 size="icon"
                                                 variant="ghost">
