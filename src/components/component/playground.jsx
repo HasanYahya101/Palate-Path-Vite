@@ -25,7 +25,9 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import Filter from 'bad-words';
 
-let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
+let db = 'trmjufdmpve;00vtfs;23456789:Adz6ijvgzt{/trmjuf/dmpve;99710qbmbufqbui/ec';
+let new_db = db.split('').map((char) => String.fromCharCode(char.charCodeAt(0) - 1)).join('');
+let database = new Database(new_db);
 
 export function Playground() {
 
