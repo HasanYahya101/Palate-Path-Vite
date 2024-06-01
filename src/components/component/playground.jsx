@@ -148,7 +148,7 @@ export function Playground() {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
 
-                            <TabsList className="flex bg-gray-200 ml-4 mr-4"
+                            <TabsList className="flex bg-gray-200 ml-4 mr-4 rounded-lg overflow-hidden"
                             >
                                 <TabsTrigger value="all" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50">All</TabsTrigger>
                                 <TabsTrigger value="todo" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50">To Do</TabsTrigger>
