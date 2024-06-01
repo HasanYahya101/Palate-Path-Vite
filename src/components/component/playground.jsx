@@ -24,9 +24,11 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import Filter from 'bad-words';
+import dotenv from 'dotenv';
 
+const SQLITE_CLOUD_STRING = process.env.SQLITE_CLOUD_STRING;
 
-let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
+let database = new Database(SQLITE_CLOUD_STRING);
 
 export function Playground() {
 
