@@ -335,6 +335,16 @@ function AddTask(change, setChange) {
             );
             return;
         }
+        else if (description.length <= 5) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description with more than 5 characters.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
         else if (description.length > 50) {
             toast(
                 {
