@@ -2,7 +2,7 @@
 
 ## Introduction
 
-A Simple CRUD based task tracking application that uses SQLite Cloud for database. It allows for moving tasks through states such as to-do, in-progress and done. It also allows for filtering of tasks.
+A Simple CRUD based task tracking application that uses SQLite Cloud for database. It allows for moving tasks through states such as to-do, in-progress and done. It also allows for filtering of tasks. Please note, i have added functionality to delete oldest 500 rows from database if the total rows exceed 1000. This is to prevent too much data, from being uploaded to my Cloud Free Plan.
 
 ## UI Library
 
