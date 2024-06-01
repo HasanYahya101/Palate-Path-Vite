@@ -99,6 +99,28 @@ export function Playground() {
         fetchinProgressData();
     }, [change]);
 
+    async function cleanDB() {
+        // check if there are 1000 or more rows in database table data, if yes delete the oldest 500 rows
+        let query = `SELECT COUNT(*) FROM data;`
+        let count = await database.sql(query);
+        console.log("count", count);
+        let row_0 = count[0];
+        console.log("row_0", row_0);
+        let COUNT = row_0["COUNT(*)"];
+        console.log("COUNT", COUNT);
+
+        if (COUNT >= 1000) {
+            let query = `DELETE FROM data WHERE id IN (SELECT id FROM data ORDER BY id ASC LIMIT 500);`
+            let deleteData = await database.sql(query);
+            console.log("deleteData", deleteData);
+        }
+        return;
+    }
+
+    useEffect(() => {
+        cleanDB();
+    }, []);
+
     return (
         (<div className="flex flex-col h-screen">
             <header
