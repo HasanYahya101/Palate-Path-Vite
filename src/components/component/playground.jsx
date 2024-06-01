@@ -21,7 +21,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-
 export function Playground() {
 
     let database = new Database('sqlitecloud://user:123456789@cy5hiufysz.sqlite.cloud:8860/palatepath.db');
@@ -256,9 +255,11 @@ export function Playground() {
 }
 
 function AddTask() {
+    const [dialogOpen, setDialogOpen] = useState(false);
     return (
         (
-            <Dialog>
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen} className="w-full max-w-md"
+            >
                 <DialogTrigger>
                     <Button className="text-white hover:bg-white" size="icon" variant="ghost">
                         <PlusIcon className="w-5 h-5" />
@@ -306,7 +307,7 @@ function AddTask() {
                                     </div>
                                     <div className="flex justify-end gap-4 mt-6">
                                         <Button type="button" variant="destructive">Cancel</Button>
-                                        <Button type="confirm" variant="default">Add Task</Button>
+                                        <Button type="button" variant="default">Add Task</Button>
                                     </div>
                                 </form>
                             </div>
