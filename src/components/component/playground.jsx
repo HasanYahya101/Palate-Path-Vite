@@ -209,13 +209,8 @@ export function Playground() {
                                                 <CheckIcon className="w-5 h-5" />
                                                 <span className="sr-only">Mark as Done</span>
                                             </Button>
-                                            <Button
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <DeleteIcon className="w-5 h-5" />
-                                                <span className="sr-only">Edit Task</span>
-                                            </Button>
+                                            <EditTodo id={task.id} setChange={setChange}
+                                            />
                                             <Button onClick={() => delTask("todo", task.id)}
                                                 className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
                                                 size="icon"
@@ -310,6 +305,111 @@ export function Playground() {
                 </Tabs>
             </main >
         </div >)
+    );
+}
+
+function EditTodo(id, setChange) {
+    // this function edits the description of task
+
+    const { toast } = useToast();
+
+    const [description_, setDescription_] = useState("");
+
+    console.log("id", id);
+
+    const filter = new Filter();
+
+    async function Confirmed() {
+        if (filter.isProfane(description_)) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description without any profanity.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description_.length <= 5) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description with more than 5 characters.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description_.length > 50) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description with less than 51 characters.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+        else if (description_ === "" || description_ === null) {
+            toast(
+                {
+                    title: "Error",
+                    description: "Please enter a description for the task.",
+                    variant: "destructive",
+                }
+            );
+            return;
+        }
+
+        let updateData = await database.sql(`UPDATE data SET description = '${description_}' WHERE id = ${id};`);
+
+        console.log("updateData", updateData);
+
+        toast(
+            {
+                title: "Success",
+                description: "Task edited successfully.",
+                variant: "success",
+            }
+        );
+
+        setDescription_("");
+        setChange ? setChange(false) : setChange(true);
+    }
+
+    return (
+        (
+            <Popover>
+                <PopoverTrigger>
+                    <Button onClick={() => setDescription_("")}
+                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                        size="icon"
+                        variant="ghost">
+                        <DeleteIcon className="w-5 h-5" />
+                        <span className="sr-only">Edit Task</span>
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                    <div className="bg-white dark:bg-gray-800 rounded-lg p-2 w-full max-w-md">
+                        <form>
+                            <div className="mb-4">
+                                <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                <Input value={description_} onChange={(e) => setDescription_(e.target.value)}
+                                    type="text" placeholder="Enter text here" id="description" name="description" className="mt-2 block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                            </div>
+                            <div className="flex justify-end gap-4 mt-6">
+                                <Button onClick={() => Confirmed()}
+                                    type="button"
+                                    variant="default">
+                                    Edit Task
+                                </Button>
+                            </div>
+                        </form>
+                    </div>
+
+                </PopoverContent>
+            </Popover>
+        )
     );
 }
 
