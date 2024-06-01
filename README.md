@@ -21,6 +21,10 @@ This project was deployed to Github Pages and can be tested there.
 ![Screenshot 2024-06-01 171220](https://github.com/HasanYahya101/Palate-Path-Vite/assets/118683092/5ca432b8-4bc8-4e70-ad05-4600a13e1f95)
 ![Screenshot 2024-06-01 171230](https://github.com/HasanYahya101/Palate-Path-Vite/assets/118683092/82c66a54-b9c9-4786-bea6-6c22257a1acd)
 
+## Walkthrough
+
+https://github.com/HasanYahya101/Palate-Path-Vite/assets/118683092/ada05ee3-eae6-4362-bccd-11b743dadfb7
+
 ## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
