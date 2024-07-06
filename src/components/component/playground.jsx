@@ -134,7 +134,8 @@ export function Playground() {
     }, []);
 
     return (
-        (<div className="flex flex-col h-screen w-full max-w-[100vw] min-w-[calc(100vw-30px)]">
+        (<div className="flex flex-col h-screen w-full max-w-[100vw] min-w-[calc(100vw-30px)]"
+        >
             <header
                 className="bg-gray-900 text-white py-4 px-6 flex items-center justify-between max-w-[100vw] min-w-[calc(100vw-30px)]">
                 <div className="flex items-center gap-2">
