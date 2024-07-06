@@ -134,9 +134,9 @@ export function Playground() {
     }, []);
 
     return (
-        (<div className="flex flex-col h-screen w-full">
+        (<div className="flex flex-col h-screen w-full max-w-[100vw] min-w-[calc(100vw-30px)]">
             <header
-                className="bg-gray-900 text-white py-4 px-6 flex items-center justify-between">
+                className="bg-gray-900 text-white py-4 px-6 flex items-center justify-between max-w-[100vw] min-w-[calc(100vw-30px)]">
                 <div className="flex items-center gap-2">
                     <ClipboardListIcon className="w-6 h-6" />
                     <h1 className="text-2xl font-bold"> PalatePath</h1>
@@ -145,7 +145,7 @@ export function Playground() {
                 />
             </header>
 
-            <main className="flex-1 bg-gray-100 dark:bg-gray-900 p-6 grid gap-6">
+            <main className="flex-1 bg-gray-100 dark:bg-gray-900 p-6 grid gap-6 max-w-[100vw] min-w-[calc(100vw-30px)]">
                 <Tabs defaultValue="all">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
