@@ -145,9 +145,9 @@ export function Playground() {
                 />
             </header>
 
-            <main className="flex-1 bg-gray-100 dark:bg-gray-900 p-6 grid gap-6 max-w-[100vw] min-w-[calc(100vw-30px)]">
+            <main className="bg-gray-100 dark:bg-gray-900 p-6 grid gap-6 max-w-[100vw] min-w-[calc(100vw-30px)] flex-1">
                 <Tabs defaultValue="all">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-4">
 
                             <TabsList className="flex bg-gray-200 ml-4 mr-4 rounded-lg overflow-hidden"
