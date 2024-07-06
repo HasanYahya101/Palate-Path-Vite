@@ -146,7 +146,7 @@ export function Playground() {
             </header>
 
             <main className="bg-gray-100 dark:bg-gray-900 p-6 grid gap-6 max-w-[100vw] min-w-[calc(100vw-30px)] flex-1">
-                <Tabs defaultValue="all">
+                <Tabs defaultValue="all" className="flex-1 flex-wrap">
                     <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-4">
 
@@ -168,7 +168,7 @@ export function Playground() {
                     </div>
                     <TabsContent value="all" className="mt-6 mb-2">
                         {allTasks === null || allTasks.length === 0 || allTasks.size === 0 ? (
-                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                            <Card className="border border-dashed shadow-sm rounded-lg flex items-center justify-center p-2 h-[66vh] w-full max-w-[94vw] mx-auto">
                                 <div className="flex flex-col items-center gap-4">
                                     <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                                     <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
@@ -219,7 +219,7 @@ export function Playground() {
                     </TabsContent>
                     <TabsContent value="todo" className="mt-6 mb-2">
                         {todoTasks.length === 0 || todoTasks.size === 0 || todoTasks === null ? (
-                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                            <Card className="border border-dashed shadow-sm rounded-lg flex items-center justify-center p-2 h-[66vh] w-full max-w-[94vw] mx-auto">
                                 <div className="flex flex-col items-center gap-4">
                                     <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                                     <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
@@ -228,6 +228,7 @@ export function Playground() {
                                     </p>
                                 </div>
                             </Card>
+
                         ) : (
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                 {todoTasks.map((task) => (
@@ -267,7 +268,7 @@ export function Playground() {
                     </TabsContent>
                     <TabsContent value="inprogress" className="mt-6 mb-2">
                         {inProgressTasks.length === 0 || inProgressTasks.size === 0 || inProgressTasks === null ? (
-                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                            <Card className="border border-dashed shadow-sm rounded-lg flex items-center justify-center p-2 h-[66vh] w-full max-w-[94vw] mx-auto">
                                 <div className="flex flex-col items-center gap-4">
                                     <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                                     <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
@@ -315,7 +316,7 @@ export function Playground() {
                     </TabsContent>
                     <TabsContent value="done" className="mt-6 mb-2">
                         {doneTasks.length === 0 || doneTasks.size === 0 || doneTasks === null ? (
-                            <Card className="border border-dashed shadow-sm rounded-lg flex-1 flex items-center justify-center p-2 h-[66vh] w-[200vh] mx-auto">
+                            <Card className="border border-dashed shadow-sm rounded-lg flex items-center justify-center p-2 h-[66vh] w-full max-w-[94vw] mx-auto">
                                 <div className="flex flex-col items-center gap-4">
                                     <NotFoundIcon className="h-12 w-12 text-gray-400 dark:text-gray-500" />
                                     <h3 className="font-bold text-2xl tracking-tight mt-2">No Tasks Found</h3>
