@@ -158,7 +158,7 @@ export function Playground() {
                                 <TabsTrigger value="done" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50">Done</TabsTrigger>
                             </TabsList>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2 w-auto">
 
                             <ApplyDateFilter setDoneTasks={setDoneTasks} setAllTasks={setAllTasks} setTodoTasks={setTodoTasks} setInProgressTasks={setInProgressTasks}
                             />
