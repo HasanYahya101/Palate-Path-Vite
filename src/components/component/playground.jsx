@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import Filter from 'bad-words';
 
 let db = 'trmjufdmpve;00vtfs;23456789:Adz6ijvgzt{/trmjuf/dmpve;99710qbmbufqbui/ec';
@@ -205,13 +206,22 @@ export function Playground() {
                                             )}
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button onClick={() => delTask(task.status, task.id)}
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <TrashIcon className="w-5 h-5" />
-                                                <span className="sr-only">Delete Task</span>
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button onClick={() => delTask(task.status, task.id)}
+                                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                            size="icon"
+                                                            variant="ghost">
+                                                            <TrashIcon className="w-5 h-5" />
+                                                            <span className="sr-only">Delete Task</span>
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <span className="text-sm text-muted-foreground select-none">Delete Task</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         </CardFooter>
                                     </Card>
                                 ))}
@@ -245,22 +255,40 @@ export function Playground() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button onClick={() => checkToDo(task.id)}
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <CheckIcon className="w-5 h-5" />
-                                                <span className="sr-only">Mark as Done</span>
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button onClick={() => checkToDo(task.id)}
+                                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                            size="icon"
+                                                            variant="ghost">
+                                                            <CheckIcon className="w-5 h-5" />
+                                                            <span className="sr-only">Mark as Done</span>
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <span className="text-sm text-muted-foreground select-none">Mark as Done</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                             <EditTodo id={task.id} setChange={setChange} change={change}
                                             />
-                                            <Button onClick={() => delTask(task.status, task.id)}
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <TrashIcon className="w-5 h-5" />
-                                                <span className="sr-only">Delete Task</span>
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button onClick={() => delTask(task.status, task.id)}
+                                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                            size="icon"
+                                                            variant="ghost">
+                                                            <TrashIcon className="w-5 h-5" />
+                                                            <span className="sr-only">Delete Task</span>
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <span className="text-sm text-muted-foreground select-none">Delete Task</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         </CardFooter>
                                     </Card>
                                 ))}
@@ -293,22 +321,40 @@ export function Playground() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button onClick={() => checkInprog(task.id)}
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <CheckIcon className="w-5 h-5" />
-                                                <span className="sr-only">Mark as Done</span>
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button onClick={() => checkInprog(task.id)}
+                                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                            size="icon"
+                                                            variant="ghost">
+                                                            <CheckIcon className="w-5 h-5" />
+                                                            <span className="sr-only">Mark as Done</span>
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <span className="text-sm text-muted-foreground select-none">Mark as Done</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                             <EditTodo id={task.id} setChange={setChange} change={change}
                                             />
-                                            <Button onClick={() => delTask(task.status, task.id)}
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <TrashIcon className="w-5 h-5" />
-                                                <span className="sr-only">Delete Task</span>
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button onClick={() => delTask(task.status, task.id)}
+                                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                            size="icon"
+                                                            variant="ghost">
+                                                            <TrashIcon className="w-5 h-5" />
+                                                            <span className="sr-only">Delete Task</span>
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <span className="text-sm text-muted-foreground select-none">Delete Task</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         </CardFooter>
                                     </Card>
                                 ))}
@@ -341,13 +387,22 @@ export function Playground() {
                                             </div>
                                         </CardContent>
                                         <CardFooter className="mt-auto mb-1 flex items-center justify-end gap-2">
-                                            <Button onClick={() => delTask(task.status, task.id)}
-                                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                                                size="icon"
-                                                variant="ghost">
-                                                <TrashIcon className="w-5 h-5" />
-                                                <span className="sr-only">Delete Task</span>
-                                            </Button>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button onClick={() => delTask(task.status, task.id)}
+                                                            className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                                            size="icon"
+                                                            variant="ghost">
+                                                            <TrashIcon className="w-5 h-5" />
+                                                            <span className="sr-only">Delete Task</span>
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <span className="text-sm text-muted-foreground select-none">Delete Task</span>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
                                         </CardFooter>
                                     </Card>
                                 ))}
@@ -438,15 +493,24 @@ function ApplySearchFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgr
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-md"
         >
-            <DialogTrigger>
-                <Button onClick={() => setDescription("")}
-                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                    size="icon"
-                    variant="ghost">
-                    <SearchIcon className="w-5 h-5" />
-                    <span className="sr-only">Search</span>
-                </Button>
-            </DialogTrigger>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <DialogTrigger>
+                            <Button onClick={() => setDescription("")}
+                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                size="icon"
+                                variant="ghost">
+                                <SearchIcon className="w-5 h-5" />
+                                <span className="sr-only">Search</span>
+                            </Button>
+                        </DialogTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <span className="text-sm text-muted-foreground select-none">Filter by Search</span>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             <DialogContent>
                 <DialogDescription>
                     <DialogHeader>
@@ -530,15 +594,24 @@ function ApplyDateFilter({ setDoneTasks, setAllTasks, setTodoTasks, setInProgres
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-md"
         >
-            <DialogTrigger>
-                <Button onClick={() => setDate(new Date())}
-                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                    size="icon"
-                    variant="ghost">
-                    <CalendarIcon className="w-5 h-5" />
-                    <span className="sr-only">Calendar</span>
-                </Button>
-            </DialogTrigger>
+            <TooltipProvider>
+                <Tooltip>
+                    <TooltipTrigger asChild>
+                        <DialogTrigger>
+                            <Button onClick={() => setDate(new Date())}
+                                className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                size="icon"
+                                variant="ghost">
+                                <CalendarIcon className="w-5 h-5" />
+                                <span className="sr-only">Calendar</span>
+                            </Button>
+                        </DialogTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <span className="text-sm text-muted-foreground select-none">Filter by Date</span>
+                    </TooltipContent>
+                </Tooltip>
+            </TooltipProvider>
             <DialogContent>
                 <DialogDescription>
                     <DialogHeader>
@@ -666,15 +739,24 @@ function EditTodo({ id, setChange, change }) {
         (
             <Popover open={isOpen} onOpenChange={setIsOpen} className="w-full max-w-md"
             >
-                <PopoverTrigger>
-                    <Button onClick={() => setDescription_("")}
-                        className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
-                        size="icon"
-                        variant="ghost">
-                        <DeleteIcon className="w-5 h-5" />
-                        <span className="sr-only">Edit Task</span>
-                    </Button>
-                </PopoverTrigger>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <PopoverTrigger>
+                                <Button onClick={() => setDescription_("")}
+                                    className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50"
+                                    size="icon"
+                                    variant="ghost">
+                                    <DeleteIcon className="w-5 h-5" />
+                                    <span className="sr-only">Edit Task</span>
+                                </Button>
+                            </PopoverTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <span className="text-sm text-muted-foreground select-none">Edit Task</span>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 <PopoverContent>
                     <div className="bg-white dark:bg-gray-800 rounded-lg p-2 w-full max-w-md">
                         <form>
@@ -795,13 +877,22 @@ function AddTask({ change, setChange }) {
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen} className="w-full max-w-md"
             >
                 <Toaster />
-                <DialogTrigger>
-                    <Button onClick={openedDialog}
-                        className="text-white hover:bg-white" size="icon" variant="ghost">
-                        <PlusIcon className="w-5 h-5" />
-                        <span className="sr-only">Add Task</span>
-                    </Button>
-                </DialogTrigger>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <DialogTrigger>
+                                <Button onClick={openedDialog}
+                                    className="text-white hover:bg-white" size="icon" variant="ghost">
+                                    <PlusIcon className="w-5 h-5" />
+                                    <span className="sr-only">Add Task</span>
+                                </Button>
+                            </DialogTrigger>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <span className="text-sm text-muted-foreground select-none">Add Task</span>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
                 <DialogContent>
                     <DialogDescription>
                         <DialogHeader>
